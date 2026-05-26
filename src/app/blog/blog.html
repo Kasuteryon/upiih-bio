@@ -26,6 +26,13 @@
   </nav>
 
   <section class="contenido">
+    @if (intro(); as info) {
+      <div class="intro">
+        <h2 class="intro__titulo">{{ info.titulo }}</h2>
+        <p class="intro__texto">{{ info.texto }}</p>
+      </div>
+    }
+
     @if (fichas().length === 0) {
       <div class="vacio">
         <p>Próximamente: contenido para <strong>{{ categoriaActiva() }}</strong>.</p>
@@ -89,9 +96,15 @@
 
           <div class="modal__datos">
             <p><strong>Especie:</strong> <em>{{ fichaActiva()!.especie }}</em></p>
-            <p><strong>Longitud:</strong> {{ fichaActiva()!.longitud }}</p>
-            <p><strong>Peso:</strong> {{ fichaActiva()!.peso }}</p>
-            <p><strong>Longevidad:</strong> {{ fichaActiva()!.longevidad }}</p>
+            @if (fichaActiva()!.longitud) {
+              <p><strong>Longitud:</strong> {{ fichaActiva()!.longitud }}</p>
+            }
+            @if (fichaActiva()!.peso) {
+              <p><strong>Peso:</strong> {{ fichaActiva()!.peso }}</p>
+            }
+            @if (fichaActiva()!.longevidad) {
+              <p><strong>Longevidad:</strong> {{ fichaActiva()!.longevidad }}</p>
+            }
             @if (fichaActiva()!.paridad) {
               <p><strong>Paridad:</strong> {{ fichaActiva()!.paridad }}</p>
             }

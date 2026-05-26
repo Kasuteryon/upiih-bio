@@ -1,5 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
-import { FICHAS_POR_CATEGORIA, Categoria, FichaFauna } from '../data';
+import { FICHAS_POR_CATEGORIA, INTRO_POR_CATEGORIA, Categoria, FichaFauna } from '../data';
 
 @Component({
   selector: 'app-blog',
@@ -22,6 +22,8 @@ export class Blog {
   readonly fichas = computed<FichaFauna[]>(
     () => FICHAS_POR_CATEGORIA[this.categoriaActiva()] ?? []
   );
+
+  readonly intro = computed(() => INTRO_POR_CATEGORIA[this.categoriaActiva()] ?? null);
 
   seleccionar(cat: Categoria) {
     this.categoriaActiva.set(cat);

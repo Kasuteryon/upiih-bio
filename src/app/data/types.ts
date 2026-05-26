@@ -1,9 +1,9 @@
 export interface FichaFauna {
   nombre: string;
   especie: string;
-  longitud: string;
-  peso: string;
-  longevidad: string;
+  longitud?: string;
+  peso?: string;
+  longevidad?: string;
   paridad?: string;
   nota?: string;
   descripcion: string;
