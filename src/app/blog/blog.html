@@ -1,0 +1,109 @@
+<div class="blog">
+  <header class="hero">
+    <div class="hero__inner">
+      <span class="hero__eyebrow">UPIIH</span>
+      <h1 class="hero__title">Flora y Fauna</h1>
+      <p class="hero__subtitle">
+        Catálogo de especies que habitan los alrededores de la unidad.
+      </p>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Categorías">
+    <div class="tabs__scroll">
+      @for (cat of categorias; track cat) {
+        <button
+          class="tabs__tab"
+          [class.tabs__tab--active]="categoriaActiva() === cat"
+          role="tab"
+          [attr.aria-selected]="categoriaActiva() === cat"
+          (click)="seleccionar(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+  </nav>
+
+  <section class="contenido">
+    @if (fichas().length === 0) {
+      <div class="vacio">
+        <p>Próximamente: contenido para <strong>{{ categoriaActiva() }}</strong>.</p>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (ficha of fichas(); track ficha.nombre) {
+          <article
+            class="card"
+            (click)="abrirFicha(ficha.nombre)"
+            tabindex="0"
+            (keydown.enter)="abrirFicha(ficha.nombre)"
+          >
+            <div class="card__media">
+              @if (ficha.imagen) {
+                <img [src]="ficha.imagen" [alt]="ficha.nombre" loading="lazy" />
+              } @else {
+                <div class="card__placeholder">Imagen no disponible</div>
+              }
+              @if (ficha.nota) {
+                <span class="card__badge" [class.card__badge--alert]="ficha.nota === 'Venenosa'">
+                  {{ ficha.nota }}
+                </span>
+              }
+            </div>
+            <div class="card__body">
+              <h2 class="card__titulo">{{ ficha.nombre }}</h2>
+              <p class="card__especie">{{ ficha.especie }}</p>
+              <p class="card__excerpt">{{ ficha.descripcion }}</p>
+              <span class="card__cta">Leer más →</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  @if (fichaActiva()) {
+    <div class="modal" (click)="cerrarFicha()" role="dialog" aria-modal="true">
+      <div class="modal__panel" (click)="$event.stopPropagation()">
+        <button class="modal__close" (click)="cerrarFicha()" aria-label="Cerrar">×</button>
+
+        <div class="modal__media">
+          @if (fichaActiva()!.imagen) {
+            <img [src]="fichaActiva()!.imagen" [alt]="fichaActiva()!.nombre" />
+          } @else {
+            <div class="card__placeholder">Imagen no disponible</div>
+          }
+        </div>
+
+        <div class="modal__contenido">
+          <h2 class="modal__titulo">
+            {{ fichaActiva()!.nombre }}
+            @if (fichaActiva()!.nota) {
+              <span
+                class="badge"
+                [class.badge--alert]="fichaActiva()!.nota === 'Venenosa'"
+              >{{ fichaActiva()!.nota }}</span>
+            }
+          </h2>
+
+          <div class="modal__datos">
+            <p><strong>Especie:</strong> <em>{{ fichaActiva()!.especie }}</em></p>
+            <p><strong>Longitud:</strong> {{ fichaActiva()!.longitud }}</p>
+            <p><strong>Peso:</strong> {{ fichaActiva()!.peso }}</p>
+            <p><strong>Longevidad:</strong> {{ fichaActiva()!.longevidad }}</p>
+            @if (fichaActiva()!.paridad) {
+              <p><strong>Paridad:</strong> {{ fichaActiva()!.paridad }}</p>
+            }
+          </div>
+
+          <p class="modal__descripcion">{{ fichaActiva()!.descripcion }}</p>
+
+          @if (fichaActiva()!.pieDeImagen) {
+            <p class="modal__pie">{{ fichaActiva()!.pieDeImagen }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>
